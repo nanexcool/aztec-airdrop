@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4049c724c69257919bf995e11d644541",
+    "revision": "d70387db2cac278ed8f197d47f7c4a21",
     "url": "/aztec-airdrop/index.html"
   },
   {
