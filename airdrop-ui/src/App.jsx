@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { ethers } from 'ethers'
 import ethP from './web3'
-const MerkleTree = require('./merkleTree.js').MerkleTree
+import MerkleTree from './merkleTree.js'
 
 const unixToDateTime = stamp => new Date(stamp * 1000).toLocaleDateString("en-US") + " " + new Date(stamp * 1000).toLocaleTimeString("en-US")
 const shortAddress = a => `${a.substr(0, 6)}...${a.substr(-4)}`
 const addresses = require('./addresses.json')
 const tree = new MerkleTree(addresses)
 const dropAddress = "0x393892fDA0AbD5678D67498F3F94985b621a81E7"
-const drop = new ethers.Contract(dropAddress, require('./KovanDrop.json'), ethP)
+const drop = new ethers.Contract(dropAddress, require('./AztecChaiAirdrop.json'), ethP)
 const chaiAddress = "0x06AF07097C9Eeb7fD685c692751D5C66dB49c215"
 const chai = new ethers.Contract(chaiAddress, require('./Chai.json'), ethP)
 const multicallAddress = "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441"
@@ -173,7 +173,6 @@ class App extends Component {
               {this.state.loaded &&
                 <div>
                   <p>Chai claimed: {176 - this.state.chaiBalance} out of 176</p>
-                  <p>Chai remaining: {this.state.chaiBalance}</p>
                   <p>Offer expires {this.state.expires}</p>
                 </div>
               }
@@ -218,7 +217,7 @@ class App extends Component {
                   this.state.tx &&
                   <div>
                     <p>
-                    On the way! <a href={`https:/kovan.etherscan.io/tx/${this.state.tx.hash}`} target="_blank" rel="noopener noreferrer">Follow on Etherscan</a>
+                    On the way! <a href={`https://etherscan.io/tx/${this.state.tx.hash}`} target="_blank" rel="noopener noreferrer">Follow on Etherscan</a>
                     </p>
                   </div>
                 }
@@ -229,7 +228,7 @@ class App extends Component {
                     </p>
                   </div>
                 }
-                <p className="hidden">
+                <p className="is-hidden">
                   <input className="button is-primary" onClick={this.doClaimWithSig} value="Claim 1 Chai with signature!" readOnly />
                 </p>
               </div>
