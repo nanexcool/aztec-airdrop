@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/aztec-airdrop/precache-manifest.f638cfaa9b071788f069d902d0b9fde1.js"
+  "/aztec-airdrop/precache-manifest.7805ea7fe1910bdc6cd5bc3efab22fa1.js"
 );
 
 self.addEventListener('message', (event) => {
