@@ -66,12 +66,13 @@ def main():
         print(f'tx sent {encode_hex(tx)}')
     else:
         account = w3.eth.account.from_key(click.prompt('enter participating priv', hide_input=True))
-        message = w3.soliditySha3(['address', 'bytes32'], [account.address, tree.root])
+        payout = w3.toChecksumAddress(click.prompt('enter payout address'))
+        message = w3.soliditySha3(['address', 'bytes32'], [payout, tree.root])
         signature = account.sign_message(encode_defunct(message)).signature
         print(f'signature: {encode_hex(signature)}')
         relay = w3.eth.account.from_key(click.prompt('enter relay priv', hide_input=True))
         w3.middleware_onion.add(construct_sign_and_send_raw_middleware(relay))
-        tx = airdrop.functions.claimWithSig(proof, account.address, signature).transact({'from': relay.address})
+        tx = airdrop.functions.claimWithSig(proof, payout, signature).transact({'from': relay.address})
         print(f'tx sent {encode_hex(tx)}')
 
 
