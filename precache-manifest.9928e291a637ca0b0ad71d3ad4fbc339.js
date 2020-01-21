@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ab37dde0f234b8a85e1ddd3eedfcfb1a",
+    "revision": "702e03a7779317202d14375e98a3d9c9",
     "url": "/aztec-airdrop/index.html"
   },
   {
-    "revision": "f1c4d4febe59a4ffd83d",
+    "revision": "59d53eec2ed045e1e7a7",
     "url": "/aztec-airdrop/static/css/main.d498bfb3.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/aztec-airdrop/static/js/2.b48cc242.chunk.js.LICENSE"
   },
   {
-    "revision": "f1c4d4febe59a4ffd83d",
-    "url": "/aztec-airdrop/static/js/main.d9e47637.chunk.js"
+    "revision": "59d53eec2ed045e1e7a7",
+    "url": "/aztec-airdrop/static/js/main.832c7160.chunk.js"
   },
   {
     "revision": "13f9a2531fa297ea651e",
