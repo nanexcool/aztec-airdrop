@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/aztec-airdrop/static/css/main.d498bfb3.chunk.css",
-    "main.js": "/aztec-airdrop/static/js/main.4c5db630.chunk.js",
-    "main.js.map": "/aztec-airdrop/static/js/main.4c5db630.chunk.js.map",
+    "main.js": "/aztec-airdrop/static/js/main.4a1cdf75.chunk.js",
+    "main.js.map": "/aztec-airdrop/static/js/main.4a1cdf75.chunk.js.map",
     "runtime-main.js": "/aztec-airdrop/static/js/runtime-main.106e1cd0.js",
     "runtime-main.js.map": "/aztec-airdrop/static/js/runtime-main.106e1cd0.js.map",
     "static/js/2.b48cc242.chunk.js": "/aztec-airdrop/static/js/2.b48cc242.chunk.js",
     "static/js/2.b48cc242.chunk.js.map": "/aztec-airdrop/static/js/2.b48cc242.chunk.js.map",
     "index.html": "/aztec-airdrop/index.html",
-    "precache-manifest.2340e04afdb66564a6bcc1aed8888281.js": "/aztec-airdrop/precache-manifest.2340e04afdb66564a6bcc1aed8888281.js",
+    "precache-manifest.8d1889ac8c517ae9518e36c838e05f28.js": "/aztec-airdrop/precache-manifest.8d1889ac8c517ae9518e36c838e05f28.js",
     "service-worker.js": "/aztec-airdrop/service-worker.js",
     "static/css/main.d498bfb3.chunk.css.map": "/aztec-airdrop/static/css/main.d498bfb3.chunk.css.map",
     "static/js/2.b48cc242.chunk.js.LICENSE": "/aztec-airdrop/static/js/2.b48cc242.chunk.js.LICENSE"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.106e1cd0.js",
     "static/js/2.b48cc242.chunk.js",
     "static/css/main.d498bfb3.chunk.css",
-    "static/js/main.4c5db630.chunk.js"
+    "static/js/main.4a1cdf75.chunk.js"
   ]
 }
