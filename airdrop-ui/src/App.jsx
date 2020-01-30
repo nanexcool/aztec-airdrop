@@ -30,6 +30,7 @@ class App extends Component {
     rootHash: null,
     claimed: null,
     expires: null,
+    days: null,
     done: null,
     sig: null,
     tx: null,
@@ -43,7 +44,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getNetwork()
+    // //this.getNetwork()
   }
 
   getNetwork = async () => {
@@ -66,12 +67,14 @@ class App extends Component {
     ])
 
     const [chaiSupply, chaiBalance, rootHash, expires, done] = all
+    const days = Math.floor((expires.toString() - Date.now() / 1000) / 60 / 60)
     this.setState({
       chaiSupply: ethers.utils.formatEther(chaiSupply),
       chaiBalance: parseInt(ethers.utils.formatEther(chaiBalance), 0),
       loaded: true,
       rootHash,
       expires: unixToDateTime(expires.toString()),
+      days,
       // claimed: parseInt(ethers.utils.formatUnits(claimed, 0)),
       // done: parseInt(ethers.utils.formatUnits(done, 0)),
     })
@@ -115,21 +118,25 @@ class App extends Component {
     const s = p.getSigner()
     const d = drop.connect(s)
     window.d = d
-    const digest = ethers.utils.solidityKeccak256(['address', 'bytes32'], ['0x72BA1965320ab5352FD6D68235Cc3C5306a6FFA2','0x20162f371d4318f677b2dc93bdda3d26c72856293a2885c2b204f212082f0a62'])
+    const digest = ethers.utils.solidityKeccak256(['address', 'bytes32'], ['0x72ba1965320ab5352fd6d68235cc3c5306a6ffa2', '0x20162f371d4318f677b2dc93bdda3d26c72856293a2885c2b204f212082f0a62'])
     const sig = await s.signMessage(ethers.utils.arrayify(digest))
     console.log(sig)
     this.setState({ sig })
     const proof = tree.getHexProof(this.state.value.toLowerCase())
-    const tx = await d.claimWithSig(proof,'0x72BA1965320ab5352FD6D68235Cc3C5306a6FFA2', sig)
+    const tx = await d.claimWithSig(proof, '0x72ba1965320ab5352fd6d68235cc3c5306a6ffa2', sig)
     const res = await tx.wait()
     this.getAll()
   }
 
   searchForAddress = async (address) => {
     if (addresses.includes(address)) {
+      let claimed = await drop.done(address)
+      claimed = claimed.toString() === "0" ? false : true
       const proof = tree.getHexProof(address)
+      console.log(proof)
       this.setState({
         address,
+        claimed,
         proof,
         included: true
       })
@@ -159,79 +166,20 @@ class App extends Component {
           <h1 className="title is-1">Hi, I'm Mariano and I want to give you 1 Chai</h1>
           <div className="columns">
             <div className="column">
-              <p className="is-size-5">
+              <p>
                 If you are one of the <strong>176 participants from over 30 countries</strong> that
                 took part in the <a href="https://www.aztecprotocol.com/ignition/" target="_blank" rel="noopener noreferrer">
                   AZTEC Ignition Ceremony</a>,
-            then I want to thank you by giving you 1 Chai! (
+          then I want to thank you by giving you 1 Chai! (
                   <a href="https://chai.money/about" target="_blank" rel="noopener noreferrer">Learn more about Chai</a>
                 )
               </p>
-              <p>
-                Connect to this page with a Web3 Browser using the account you participated with, and <strong>claim your reward</strong>!
-              </p>
-              {this.state.loaded &&
-                <div>
-                  <p>Chai claimed: {176 - this.state.chaiBalance} out of 176</p>
-                  <p>Offer expires {this.state.expires}</p>
-                </div>
-              }
-            </div>
-            <div className="column">
-              <div className="box">
-                <nav className="level is-mobile">
-                  {window.ethereum &&
-                    <button className="level-item button is-info" onClick={this.connect}>
-                      {(this.state.address && this.state.connected) ? `Connected: ${shortAddress(this.state.address)}` : 'Connect Wallet'}
-                    </button>
-                  }
-                </nav>
-                {this.state.chainId === 1 ||
-                  <p>Please connect to Mainnet!</p>
-                }
-                <form onSubmit={this.handleSubmit}>
-                  <div className="field has-addons">
-                    <div className="control is-expanded">
-                      <input className="input" type="text" id="address" name="address" placeholder="Search for your address (0x...)" value={this.state.value} onChange={this.handleChange} />
-                    </div>
-                    <div className="control">
-                      <input className="button is-primary" type="submit" value="Search" />
-                    </div>
-                  </div>
-                </form>
-                <br />
-                {this.state.included &&
-                  <div>
-                    <p>Congrats! This address participated in the AZTEC Ignition Ceremony and is entitled to 1 Chai, courtesy of me :)</p>
-                    <nav className="level is-mobile">
-                      <input className="level-item button is-primary" onClick={this.doClaim} value="Claim 1 Chai!" readOnly />
-                    </nav>
-                  </div>
-                }
-                {this.state.included === false &&
-                  <div>
-                    <p>Sorry, this address is not part of the AZTEC Ignition Ceremony :(</p>
-                  </div>
-                }
-                {
-                  this.state.tx &&
-                  <div>
-                    <p>
-                    On the way! <a href={`https://etherscan.io/tx/${this.state.tx.hash}`} target="_blank" rel="noopener noreferrer">Follow on Etherscan</a>
-                    </p>
-                  </div>
-                }
-                { this.state.res && this.state.res.status === 1 &&
-                  <div>
-                    <p>
-                      Done! Enjoy your Chai ;)
-                    </p>
-                  </div>
-                }
-                <p className="is-hidden">
-                  <input className="button is-primary" onClick={this.doClaimWithSig} value="Claim 1 Chai with signature!" readOnly />
-                </p>
-              </div>
+              <h3 className="title is-3">
+                This experiment is over!
+              </h3>
+              <h5 className="subtitle">
+                23 Chai was handed out over 10 days. Thank you!
+              </h5>
             </div>
           </div>
         </section>
@@ -241,18 +189,14 @@ class App extends Component {
               <h3 className="is-size-3">How does it work?</h3>
               <p>
                 AZTEC provides a <a href="https://github.com/AztecProtocol/ignition-verification#list-of-participants">list of participants</a> that
-                succesfully completed the process. I created a Merkle Tree with these addresses. The smart contract only stores a 
-                Merkle Root of the tree. You send a proof stating your address is in there, and the smart contract double 
+                succesfully completed the process. I created a Merkle Tree with these addresses. The smart contract only stores a
+                Merkle Root of the tree. You send a proof stating your address is in there, and the smart contract double
                 checks and sends you 1 Chai.
               </p>
-              {this.state.loaded ?
-                <p style={{ wordBreak: 'break-word' }}>Root Hash: {this.state.rootHash}</p> :
-                <p>Loading</p>
-              }
-              
-              <section className="section">
-              <p className="subtitle"><strong>Disclaimer!</strong> This project was built over one weekend. While the worst that can happen is that I lose {this.state.chaiBalance || 'some'} Chai, I thought it was worth mentioning. There's no audit or anything of the sort.</p>
-              </section>
+              <p>
+                Smart contract: <a href="https://etherscan.io/address/0x393892fDA0AbD5678D67498F3F94985b621a81E7" target="_blank" rel="noopener noreferrer">
+                  0x393892fDA0AbD5678D67498F3F94985b621a81E7</a>
+              </p>
             </div>
           </div>
         </section>
